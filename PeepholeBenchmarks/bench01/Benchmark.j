@@ -16,14 +16,10 @@
   new joos/lib/JoosIO
   dup
   invokenonvirtual joos/lib/JoosIO/<init>()V
-  dup
   astore_1
-  pop
   aload_1
   invokevirtual joos/lib/JoosIO/readLine()Ljava/lang/String;
-  dup
   astore_2
-  pop
   aload_2
   ldc "backtrack"
   if_acmpeq true_2
@@ -36,9 +32,7 @@
   new BacktrackSolver
   dup
   invokenonvirtual BacktrackSolver/<init>()V
-  dup
   astore_3
-  pop
   goto stop_1
   else_0:
   aload_2
@@ -53,17 +47,13 @@
   new BacktrackSolver
   dup
   invokenonvirtual BacktrackSolver/<init>()V
-  dup
   astore_3
-  pop
   goto stop_5
   else_4:
   new BacktrackSolver
   dup
   invokenonvirtual BacktrackSolver/<init>()V
-  dup
   astore_3
-  pop
   stop_5:
   stop_1:
   aload_3

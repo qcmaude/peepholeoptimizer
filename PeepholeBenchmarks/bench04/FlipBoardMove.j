@@ -112,6 +112,5 @@
   .limit stack 1
   ldc "Flip Board: flips the board upside down."
   areturn
-  nop
 .end method
 

@@ -155,6 +155,5 @@
   .limit stack 1
   ldc "Diagonal Bomb: clears the contents of diagonal cells."
   areturn
-  nop
 .end method
 

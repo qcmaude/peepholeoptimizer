@@ -63,6 +63,5 @@
   .limit stack 1
   ldc "Bomb: eliminates the contents of all surrounding cells."
   areturn
-  nop
 .end method
 

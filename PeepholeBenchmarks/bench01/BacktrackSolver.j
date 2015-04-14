@@ -17,29 +17,12 @@
   getfield SudokuSolver/grid Ljava/util/Vector;
   iload_1
   invokevirtual java/util/Vector/elementAt(I)Ljava/lang/Object;
-  dup
-  astore_3
-  pop
-  aload_3
   checkcast java/util/Vector
-  dup
-  astore 5
-  pop
-  aload 5
   iload_2
   invokevirtual java/util/Vector/elementAt(I)Ljava/lang/Object;
-  dup
-  astore 4
-  pop
-  aload 4
   checkcast java/lang/Integer
-  dup
-  astore 6
-  pop
-  aload 6
   invokevirtual java/lang/Integer/intValue()I
   ireturn
-  nop
 .end method
 
 .method public setVal(III)V
@@ -49,21 +32,13 @@
   getfield SudokuSolver/grid Ljava/util/Vector;
   iload_1
   invokevirtual java/util/Vector/elementAt(I)Ljava/lang/Object;
-  dup
-  astore 4
-  pop
-  aload 4
   checkcast java/util/Vector
-  dup
   astore 7
-  pop
   new java/lang/Integer
   dup
   iload_3
   invokenonvirtual java/lang/Integer/<init>(I)V
-  dup
   astore 6
-  pop
   aload 7
   aload 6
   iload_2
@@ -75,9 +50,7 @@
   .limit locals 4
   .limit stack 3
   iconst_0
-  dup
   istore_3
-  pop
   start_0:
   iload_3
   ldc 9
@@ -103,26 +76,18 @@
   iconst_0
   ireturn
   stop_4:
-  iload_3
-  iconst_1
-  iadd
-  dup
-  istore_3
-  pop
+  iinc 3 1
   goto start_0
   stop_1:
   iconst_1
   ireturn
-  nop
 .end method
 
 .method public checkCol(II)Z
   .limit locals 4
   .limit stack 3
   iconst_0
-  dup
   istore_3
-  pop
   start_0:
   iload_3
   ldc 9
@@ -148,17 +113,11 @@
   iconst_0
   ireturn
   stop_4:
-  iload_3
-  iconst_1
-  iadd
-  dup
-  istore_3
-  pop
+  iinc 3 1
   goto start_0
   stop_1:
   iconst_1
   ireturn
-  nop
 .end method
 
 .method public checkBox(III)Z
@@ -169,21 +128,15 @@
   idiv
   iconst_3
   imul
-  dup
   istore_1
-  pop
   iload_2
   iconst_3
   idiv
   iconst_3
   imul
-  dup
   istore_2
-  pop
   iconst_0
-  dup
   istore 4
-  pop
   start_0:
   iload 4
   iconst_3
@@ -195,9 +148,7 @@
   stop_3:
   ifeq stop_1
   iconst_0
-  dup
   istore 5
-  pop
   start_4:
   iload 5
   iconst_3
@@ -227,34 +178,21 @@
   iconst_0
   ireturn
   stop_8:
-  iload 5
-  iconst_1
-  iadd
-  dup
-  istore 5
-  pop
+  iinc 5 1
   goto start_4
   stop_5:
-  iload 4
-  iconst_1
-  iadd
-  dup
-  istore 4
-  pop
+  iinc 4 1
   goto start_0
   stop_1:
   iconst_1
   ireturn
-  nop
 .end method
 
 .method public checkFinish()Z
   .limit locals 3
   .limit stack 3
   iconst_0
-  dup
   istore_1
-  pop
   start_0:
   iload_1
   ldc 9
@@ -266,9 +204,7 @@
   stop_3:
   ifeq stop_1
   iconst_0
-  dup
   istore_2
-  pop
   start_4:
   iload_2
   ldc 9
@@ -283,8 +219,7 @@
   iload_1
   iload_2
   invokevirtual BacktrackSolver/getVal(II)I
-  iconst_0
-  if_icmpeq true_9
+  ifeq true_9
   iconst_0
   goto stop_10
   true_9:
@@ -294,25 +229,14 @@
   iconst_0
   ireturn
   stop_8:
-  iload_2
-  iconst_1
-  iadd
-  dup
-  istore_2
-  pop
+  iinc 2 1
   goto start_4
   stop_5:
-  iload_1
-  iconst_1
-  iadd
-  dup
-  istore_1
-  pop
+  iinc 1 1
   goto start_0
   stop_1:
   iconst_1
   ireturn
-  nop
 .end method
 
 .method public solveCell(II)V
@@ -327,8 +251,7 @@
   iload_1
   iload_2
   invokevirtual BacktrackSolver/getVal(II)I
-  iconst_0
-  if_icmpne true_3
+  ifne true_3
   iconst_0
   goto stop_4
   true_3:
@@ -339,12 +262,10 @@
   iload_1
   iload_2
   invokevirtual BacktrackSolver/next(II)V
-  goto stop_2
+  return
   else_1:
   iconst_1
-  dup
   istore_3
-  pop
   start_5:
   iload_3
   ldc 10
@@ -397,12 +318,7 @@
   iload_2
   invokevirtual BacktrackSolver/next(II)V
   stop_9:
-  iload_3
-  iconst_1
-  iadd
-  dup
-  istore_3
-  pop
+  iinc 3 1
   goto start_5
   stop_6:
   aload_0
@@ -420,7 +336,6 @@
   iconst_0
   invokevirtual BacktrackSolver/setVal(III)V
   stop_15:
-  stop_2:
   return
 .end method
 
@@ -442,7 +357,7 @@
   iconst_1
   iadd
   invokevirtual BacktrackSolver/solveCell(II)V
-  goto stop_1
+  return
   else_0:
   aload_0
   iload_1
@@ -450,7 +365,6 @@
   iadd
   iconst_0
   invokevirtual BacktrackSolver/solveCell(II)V
-  stop_1:
   return
 .end method
 

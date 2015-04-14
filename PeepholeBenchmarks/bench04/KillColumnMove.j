@@ -41,6 +41,5 @@
   .limit stack 1
   ldc "Kill Column: clears the column where the token lands."
   areturn
-  nop
 .end method
 

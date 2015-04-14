@@ -41,6 +41,5 @@
   .limit stack 1
   ldc "Kill Row: clears the row where the token lands."
   areturn
-  nop
 .end method
 

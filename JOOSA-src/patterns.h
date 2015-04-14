@@ -127,9 +127,16 @@ int simplify_goto_goto(CODE **c)
   return 0;
 }
 
-/* 
-*
-*/
+/* goto L1
+ * ...
+ * L1:
+ * return
+ * --------->
+ * return
+ * ...
+ * L1:  (reference count reduced by 1)
+ * return
+ */
 int simplify_label_goto(CODE **c)
 { int l1;
   if (is_goto(*c,&l1) && is_return(next(destination(l1)))) {
@@ -139,25 +146,13 @@ int simplify_label_goto(CODE **c)
   return 0;
 }
 
-/*
-int simplify_label_pop(CODE **c)
-{ int l1,l2;
-  if (is_dup(*c) && is_if(next(*c),&l2)
-    && is_pop(next(next(*c)) 
-    && is_popc(next(destination(l2))))) {
-
-     return replace(c,3,makeCODEgoto(l2,NULL));
-  }
-  return 0;
-}
-*/
-/*
-*
-*
-*
-*
-*
-*/
+/* iload x
+ * ldc k   (0<=k<=127)
+ * isub
+ * istore x
+ * --------->
+ * iinc x -k
+ */ 
 int negative_increment(CODE **c) 
 { int x,y,k;
   if (is_iload(*c,&x) &&
@@ -170,6 +165,12 @@ int negative_increment(CODE **c)
   return 0;
 }
 
+/* 
+ * aload x 
+ * pop
+ * ------->
+ * //Nothing...
+ */
 int remove_push_pop(CODE **c) 
 {
   if (is_simplepush(*c) &&
@@ -178,6 +179,18 @@ int remove_push_pop(CODE **c)
   }
   return 0;
 }
+
+
+/* dup
+ * aload x
+ * swap
+ * putfield ...
+ * pop
+ * ------->
+ * aload x
+ * swap
+ * putfield ...
+ */
 int remove_dup_aload_swap_putfield_pop(CODE **c) {
   int al;
   char* pf;
@@ -191,20 +204,22 @@ int remove_dup_aload_swap_putfield_pop(CODE **c) {
   return 0;
 }
 
-/**
- *
- *
- *
- * 
+/* goto L1
+ * ... (All labels in this section are dead)
+ * L3:
+ * -------->
+ * goto L1
+ * L3:
  */
 int remove_block(CODE **c) {
-  int l1, l2, tmp;
-  if(is_goto(*c, &l1) && 
-    is_label(next(*c), &l2) &&
-    deadlabel(l2)) {
-    CODE *curr = next(next(*c));
-    int i = 2;
-    while (curr && !is_label(curr, &tmp)){
+  int l1, l2;
+  if(is_goto(*c, &l1)){
+    CODE *curr = next(*c);
+    int i = 1;
+    while (curr){
+	  if (is_label(curr, &l2) && !deadlabel(l2)){
+		return 0;
+	  }
       curr = next(curr);
       i++;
     }
@@ -213,6 +228,10 @@ int remove_block(CODE **c) {
   return 0;
 }
 
+/* L1: (L1 is a dead label)
+ * --------->
+ * // Nothing
+ */
 int remove_dead_label(CODE **c) {
   int l1;
   if(is_label(*c, &l1) &&
@@ -222,24 +241,80 @@ int remove_dead_label(CODE **c) {
   return 0;
 }
 
+/* 
+ * 
+ * 
+ * 
+ * 
+ */
 int simplify_ifcmp(CODE **c) {
   int k, l1;
   if(is_ldc_int(*c, &k) && k == 0) {
-
     if(is_if_icmpeq(next(*c), &l1)) {
       return replace(c, 2, makeCODEifeq(l1, NULL));
     } else if(is_if_icmpne(next(*c), &l1)) {
       return replace(c, 2, makeCODEifne(l1, NULL));
     }
-
   }
-
   return 0;
 }
 
-#define OPTS 13
+/* nop
+ * ------->
+ * // Nothing
+ */
+int remove_nop(CODE **c) {
+  if(is_nop(*c)) {
+    return kill_line(c);
+  }
+  return 0;
+}
 
-OPTI optimization[OPTS] = {simplify_astore,
+/* astore n
+ * aload n
+ * ... (No loads of n or branches before a store of n)
+ * --------> 
+ * ... (No loads of n or branches before a store of n)
+ */
+int remove_astore_aload(CODE **c){
+  int i1, i2, l;
+  if(is_astore(*c, &i1) && 
+		  is_aload(next(*c), &i2) && 
+		  i1 == i2){
+    CODE *curr = next(next(*c));
+	while (curr){
+		if (is_return(curr) || 
+				is_areturn(curr) || 
+				is_ireturn(curr) ||
+				(is_astore(curr, &i2) && i1 == i2)){
+			return replace(c, 2, NULL);
+		} else if (is_if(&curr, &l) || 
+				(is_aload(curr, &i2) && 
+				 i1 == i2)){
+			return 0;
+		} else if (is_goto(curr, &l)){
+			curr = destination(l);
+		}
+		curr = next(curr);
+	}
+  }
+  return 0;
+}
+
+int remove_dumb_aload_swap(CODE **c){
+	int i1, i2;
+	if (is_aload(*c, &i1) &&
+			is_aload(next(*c), &i2) &&
+			is_swap(next(next(*c)))){
+		return replace(c, 3, makeCODEaload(i2, makeCODEaload(i1, NULL)));
+	}
+	return 0;
+}
+
+#define OPTS 16
+
+OPTI optimization[OPTS] = {remove_nop,
+						   simplify_astore,
                            simplify_istore,
                            simplify_multiplication_right,
                            multiple_constant_folding,
@@ -251,5 +326,7 @@ OPTI optimization[OPTS] = {simplify_astore,
                            remove_block,
                            remove_push_pop,
                            remove_dup_aload_swap_putfield_pop,
-                           remove_dead_label
+                           remove_dead_label,
+						   remove_astore_aload,
+						   remove_dumb_aload_swap
                            };

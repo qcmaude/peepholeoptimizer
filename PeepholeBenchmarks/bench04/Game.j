@@ -16,9 +16,8 @@
   .limit stack 3
   aload_0
   invokenonvirtual java/lang/Object/<init>()V
-  aload_1
   aload_0
-  swap
+  aload_1
   putfield Game/board LBoard;
   new java/lang/Character
   dup
@@ -203,7 +202,6 @@
   aload_0
   getfield Game/X Ljava/lang/Character;
   areturn
-  nop
 .end method
 
 .method public getO()Ljava/lang/Character;
@@ -212,7 +210,6 @@
   aload_0
   getfield Game/O Ljava/lang/Character;
   areturn
-  nop
 .end method
 
 .method public getCurrentPlayer()Ljava/lang/Character;
@@ -221,7 +218,6 @@
   aload_0
   getfield Game/currentPlayer Ljava/lang/Character;
   areturn
-  nop
 .end method
 
 .method public getOtherPlayer()Ljava/lang/Character;
@@ -245,7 +241,6 @@
   aload_0
   getfield Game/X Ljava/lang/Character;
   areturn
-  nop
 .end method
 
 .method public getOpponent(Ljava/lang/Character;)Ljava/lang/Character;
@@ -268,7 +263,6 @@
   aload_0
   getfield Game/X Ljava/lang/Character;
   areturn
-  nop
 .end method
 
 .method public togglePlayer()V
@@ -321,7 +315,6 @@
   aload_0
   getfield Game/playerOMoves Ljava/util/Vector;
   areturn
-  nop
 .end method
 
 .method public printMenu()V
@@ -627,7 +620,6 @@
   iconst_1
   isub
   ireturn
-  nop
 .end method
 
 .method public applyMove(I)V
@@ -682,8 +674,6 @@
   new joos/lib/JoosIO
   dup
   invokenonvirtual joos/lib/JoosIO/<init>()V
-  astore_1
-  aload_1
   ldc "1 - with fixed specialty moves\n2 - with random specialty moves"
   invokevirtual joos/lib/JoosIO/println(Ljava/lang/String;)V
   return
@@ -841,7 +831,6 @@
   invokevirtual Board/print()V
   aload_2
   areturn
-  nop
 .end method
 
 .method public static main([Ljava/lang/String;)V

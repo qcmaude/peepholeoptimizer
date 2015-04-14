@@ -90,7 +90,6 @@
   aload_0
   getfield Board/width I
   ireturn
-  nop
 .end method
 
 .method public getHeight()I
@@ -99,7 +98,6 @@
   aload_0
   getfield Board/height I
   ireturn
-  nop
 .end method
 
 .method public get(II)Ljava/lang/Character;
@@ -110,13 +108,10 @@
   iload_1
   invokevirtual java/util/Vector/elementAt(I)Ljava/lang/Object;
   checkcast java/util/Vector
-  astore_3
-  aload_3
   iload_2
   invokevirtual java/util/Vector/elementAt(I)Ljava/lang/Object;
   checkcast java/lang/Character
   areturn
-  nop
 .end method
 
 .method public full()Z
@@ -172,7 +167,6 @@
   stop_1:
   iconst_1
   ireturn
-  nop
 .end method
 
 .method public inRange(II)Z
@@ -225,7 +219,6 @@
   stop_10:
   false_0:
   ireturn
-  nop
 .end method
 
 .method public set(IILjava/lang/Character;)V
@@ -457,7 +450,6 @@
   stop_9:
   iconst_0
   ireturn
-  nop
 .end method
 
 .method public isValidColumn(I)Z
@@ -500,7 +492,6 @@
   stop_7:
   false_0:
   ireturn
-  nop
 .end method
 
 .method public print()V
@@ -1032,7 +1023,6 @@
   stop_64:
   aconst_null
   areturn
-  nop
 .end method
 
 .method public static main([Ljava/lang/String;)V
